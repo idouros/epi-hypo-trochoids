@@ -37,6 +37,7 @@ def spire(canvas):
 def main():
     canvas = np.full((img_rows, img_cols, img_channels), fill_value = 255, dtype = np.uint8)
     spire(canvas)
+    cv2.imshow('RGB', canvas)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
