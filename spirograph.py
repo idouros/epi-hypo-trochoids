@@ -28,8 +28,7 @@ def spire(canvas):
     start_point = (0, 0)
     for i in range(spire_length):
         t = i * spire_step
-        # Still can't figure out why the denominator in the second terms below is r_rolling
-        # and not r_fixed. Doesn't seem to make sense...
+        # https://en.wikipedia.org/wiki/Spirograph#Mathematical_basis
         x = row_shift + (d_r) * math.cos(t) + d * math.cos((d_r / r_rolling) * t)
         y = col_shift + (d_r) * math.sin(t) - d * math.sin((d_r / r_rolling) * t)
         end_point = (int(y), int(x))
