@@ -3,22 +3,22 @@ import numpy as np
 import math
 import time
 
-img_rows = 800
-img_cols = 800
+img_rows = 850
+img_cols = 850
 img_channels = 3
 
 spire_length = 10000
 spire_step = 0.01
 
 # The next three must be FLOAT
-r_fixed = 390.0     # radius of the fixed circle
-r_rolling = 170.0   # radius of the rolling circle, >0 for hypotrochoid, >0 for epitrochoid
-d = 140.0           # distance of tracing point from the centre of the rolling circle
-color = (0, 255, 0)
+r_fixed = 300.0     # radius of the fixed circle
+r_rolling = -52.0   # radius of the rolling circle, >0 for hypotrochoid, <0 for epitrochoid
+d = 50.0           # distance of tracing point from the centre of the rolling circle
+spire_color = (0, 0, 0)
 circle_color_fixed = (0, 0, 255)
 circle_color_rolling = (255, 0, 0)
 thickness = 2
-pace = 1            # Zero does not animate.
+pace = 2            # Zero does not animate.
 show_circles = True
 
 def spire():
@@ -37,7 +37,7 @@ def spire():
         y = col_shift + (d_r) * math.sin(t) - d * math.sin((d_r / r_rolling) * t)
         end_point = (int(y), int(x))
         if(i > 0):
-            spire_canvas = cv2.line(spire_canvas, start_point, end_point, color, thickness, cv2.LINE_AA)
+            spire_canvas = cv2.line(spire_canvas, start_point, end_point, spire_color, thickness, cv2.LINE_AA)
         start_point = end_point
         disp_canvas = spire_canvas.copy()
         if pace > 0:
@@ -46,14 +46,15 @@ def spire():
                 centre_circle_rolling = (int(col_shift + (d_r) * math.sin(t)), int(row_shift + (d_r) * math.cos(t)))
                 tracing_point = end_point
                 # Fixed circle
-                disp_canvas = cv2.circle(disp_canvas, centre_circle_fixed, 2, circle_color_fixed,2)
-                disp_canvas = cv2.circle(disp_canvas, centre_circle_fixed, int(r_fixed), circle_color_fixed)
+                disp_canvas = cv2.circle(disp_canvas, centre_circle_fixed, thickness*2, circle_color_fixed, thickness)
+                disp_canvas = cv2.circle(disp_canvas, centre_circle_fixed, int(r_fixed), circle_color_fixed, thickness)
                 # Rolling circle
-                disp_canvas = cv2.circle(disp_canvas, centre_circle_rolling, 2, circle_color_rolling, 2)
-                disp_canvas = cv2.circle(disp_canvas, centre_circle_rolling, int(r_rolling), circle_color_rolling)
+                disp_canvas = cv2.circle(disp_canvas, centre_circle_rolling, thickness*2, circle_color_rolling, thickness)
+                disp_canvas = cv2.circle(disp_canvas, centre_circle_rolling, int(abs(r_rolling)), circle_color_rolling, thickness)
+                disp_canvas = cv2.line(disp_canvas, centre_circle_fixed, centre_circle_rolling, circle_color_fixed, thickness)
                 # Tracing point
-                disp_canvas = cv2.circle(disp_canvas, tracing_point, 2, circle_color_rolling, 2)
-                disp_canvas = cv2.line(disp_canvas, tracing_point, centre_circle_rolling, circle_color_rolling)                
+                disp_canvas = cv2.circle(disp_canvas, tracing_point, thickness*2, circle_color_rolling, thickness)
+                disp_canvas = cv2.line(disp_canvas, tracing_point, centre_circle_rolling, circle_color_rolling, thickness)                
             cv2.imshow('RGB', disp_canvas)
             cv2.waitKey(pace)
     cv2.waitKey(0)
