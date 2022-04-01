@@ -3,22 +3,22 @@ import numpy as np
 import math
 import time
 
-img_rows = 850
-img_cols = 850
+img_rows = 720
+img_cols = 720
 img_channels = 3
 
-spire_length = 10000
-spire_step = 0.01
+spire_length = 1000000
+spire_step = 0.005
 
 # The next three must be FLOAT
-r_fixed = 300.0     # radius of the fixed circle
-r_rolling = -52.0   # radius of the rolling circle, >0 for hypotrochoid, <0 for epitrochoid
-d = 50.0           # distance of tracing point from the centre of the rolling circle
+r_fixed = 210.0     # radius of the fixed circle
+r_rolling = -65.0   # radius of the rolling circle, >0 for hypotrochoid, <0 for epitrochoid
+d = 70.0           # distance of tracing point from the centre of the rolling circle
 spire_color = (0, 0, 0)
 circle_color_fixed = (0, 0, 255)
 circle_color_rolling = (255, 0, 0)
-thickness = 2
-pace = 2            # Zero does not animate.
+thickness = 1
+pace = 0         # Zero does not animate.
 show_circles = True
 
 def spire():
@@ -39,8 +39,8 @@ def spire():
         if(i > 0):
             spire_canvas = cv2.line(spire_canvas, start_point, end_point, spire_color, thickness, cv2.LINE_AA)
         start_point = end_point
-        disp_canvas = spire_canvas.copy()
         if pace > 0:
+            disp_canvas = spire_canvas.copy()
             if show_circles:
                 centre_circle_fixed = (int(col_shift), int(row_shift))
                 centre_circle_rolling = (int(col_shift + (d_r) * math.sin(t)), int(row_shift + (d_r) * math.cos(t)))
